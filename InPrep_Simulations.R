@@ -13,7 +13,9 @@ require(ggplot2)
 ####################
 # Global Variables #
 ####################
-setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/07_visualization/02_sorted/")
+#setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/TreeDepth_3N/07_parsed_results/01_notSorted/")
+
+setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/TreeDepth_3N/07_parsed_results/02_sorted/")
 
 n_sims = 20
 n_genes_fixed = 3
@@ -112,6 +114,6 @@ plot_0.01 = ggplot(data=dataHandle_0.01, aes(x=sim, y=gene)) +
     xlab("\nSimulations") + 
     ylab("Genes\n")
 
-svg("/home/michael/Desktop/Tolpis.HybrSims_0.01.svg", width=5, height=5)
+svg("/home/michael/Desktop/Tolpis.HybrSims_0.01_sorted.svg", width=5, height=5)
 plot_0.01
 dev.off()
