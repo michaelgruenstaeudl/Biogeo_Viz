@@ -5,18 +5,26 @@
 #email = "gruenstaeudl.1@osu.edu"
 #version = "2015.02.01.1800"
 
-## Libraries
+#############
+# Libraries #
+#############
 require(ggplot2)
 
-## Global Variables
-setwd("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/01_starBEAST_GeneTrees/07_parsed_results/notSorted/")
+####################
+# Global Variables #
+####################
+setwd("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/02_BEAST_GeneTrees/07_parsed_results/")
 
-n_sims = 20
+#setwd("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/01_starBEAST_GeneTrees/07_parsed_results/sorted/")
+
+
+n_sims = 10
+#n_sims = 20
 n_genes_fixed = 10
 n_sum_stats = 3
 nums = sprintf("%02d", c(1:n_sims))
-fn_prefixes = c("CommT.Jan2015.regular.sim.",
-                "CommT.Jan2015.swapped.sim.")
+#fn_prefixes = c("CommT.Jan2015.regular.sim.", "CommT.Jan2015.swapped.sim.")
+fn_prefixes = c("CommT.Jan2015.fitonly.sim.")
 
 ## Load .rda-files
 for (fns in fn_prefixes) {
@@ -79,18 +87,18 @@ for (num in nums) {
   name_handle = paste(fn_prefixes[[1]], num, "$results$alpha0.01$acrGene", sep="")
   dataHandle_reg_a0.01_acrGene[[num]] = eval(parse(text = name_handle))
 }
-# perGene - swapped #
-dataHandle_swap_a0.01_perGene = list()
-for (num in nums) {
-  name_handle = paste(fn_prefixes[[2]], num, "$results$alpha0.01$perGene", sep="")
-  dataHandle_swap_a0.01_perGene[[num]] = eval(parse(text = name_handle))
-}
-# acrGenes - swapped #
-dataHandle_swap_a0.01_acrGene = list()
-for (num in nums) {
-  name_handle = paste(fn_prefixes[[2]], num, "$results$alpha0.01$acrGene", sep="")
-  dataHandle_swap_a0.01_acrGene[[num]] = eval(parse(text = name_handle))
-}
+## perGene - swapped #
+#dataHandle_swap_a0.01_perGene = list()
+#for (num in nums) {
+#  name_handle = paste(fn_prefixes[[2]], num, "$results$alpha0.01$perGene", sep="")
+#  dataHandle_swap_a0.01_perGene[[num]] = eval(parse(text = name_handle))
+#}
+## acrGenes - swapped #
+#dataHandle_swap_a0.01_acrGene = list()
+#for (num in nums) {
+#  name_handle = paste(fn_prefixes[[2]], num, "$results$alpha0.01$acrGene", sep="")
+#  dataHandle_swap_a0.01_acrGene[[num]] = eval(parse(text = name_handle))
+#}
 
 ######################
 # STEP2. Format data #
@@ -106,18 +114,18 @@ dataHandle_reg_aG_0.01 = do.call("rbind", wrapper(dataHandle_reg_a0.01_acrGene, 
 dataHandle_reg_aG_0.01[, ncol(dataHandle_reg_aG_0.01)+1] = "regular"
 colnames(dataHandle_reg_aG_0.01)[ncol(dataHandle_reg_aG_0.01)] = "sim_type"
 
-# perGene - 10 loci at alpha=0.01 #
-dataHandle_swap_pG_0.01 = do.call("rbind", wrapper(dataHandle_swap_a0.01_perGene, nums, n_genes_fixed))
-dataHandle_swap_pG_0.01[, ncol(dataHandle_swap_pG_0.01)+1] = "swapped"
-colnames(dataHandle_swap_pG_0.01)[ncol(dataHandle_swap_pG_0.01)] = "sim_type"
+## perGene - 10 loci at alpha=0.01 #
+#dataHandle_swap_pG_0.01 = do.call("rbind", wrapper(dataHandle_swap_a0.01_perGene, nums, n_genes_fixed))
+#dataHandle_swap_pG_0.01[, ncol(dataHandle_swap_pG_0.01)+1] = "swapped"
+#colnames(dataHandle_swap_pG_0.01)[ncol(dataHandle_swap_pG_0.01)] = "sim_type"
 
-# acrGenes - 10 loci at alpha=0.01 #
-dataHandle_swap_aG_0.01 = do.call("rbind", wrapper(dataHandle_swap_a0.01_acrGene, nums, n_genes_fixed, special=T))
-dataHandle_swap_aG_0.01[, ncol(dataHandle_swap_aG_0.01)+1] = "swapped"
-colnames(dataHandle_swap_aG_0.01)[ncol(dataHandle_swap_aG_0.01)] = "sim_type"
+## acrGenes - 10 loci at alpha=0.01 #
+#dataHandle_swap_aG_0.01 = do.call("rbind", wrapper(dataHandle_swap_a0.01_acrGene, nums, n_genes_fixed, special=T))
+#dataHandle_swap_aG_0.01[, ncol(dataHandle_swap_aG_0.01)+1] = "swapped"
+#colnames(dataHandle_swap_aG_0.01)[ncol(dataHandle_swap_aG_0.01)] = "sim_type"
 
-dataHandle_0.01 = rbind(dataHandle_reg_pG_0.01, dataHandle_reg_aG_0.01,
-                        dataHandle_swap_pG_0.01, dataHandle_swap_aG_0.01)
+dataHandle_0.01 = rbind(dataHandle_reg_pG_0.01, dataHandle_reg_aG_0.01)#,
+                        #dataHandle_swap_pG_0.01, dataHandle_swap_aG_0.01)
 
 #####################
 # STEP4. Make plots #
@@ -138,6 +146,6 @@ plot_0.01 = ggplot(data=dataHandle_0.01, aes(x=sim, y=gene)) +
     xlab("\nSimulations") + 
     ylab("Genes\n")
 
-svg("/home/michael/Desktop/CommT.Jan2015_RESULTS_0.01.svg", width=7, height=6)
+svg("/home/michael/Desktop/CommTJan2015_0.01.svg", width=7, height=6)
 plot_0.01
 dev.off()

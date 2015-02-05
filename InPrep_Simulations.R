@@ -3,7 +3,7 @@
 #copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
 #contributors = c("Michael Gruenstaeudl")
 #email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.01.1700"
+#version = "2015.02.05.1700"
 
 #############
 # Libraries #
@@ -13,9 +13,9 @@ require(ggplot2)
 ####################
 # Global Variables #
 ####################
-#setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/TreeDepth_3N/07_parsed_results/01_notSorted/")
+#setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/TreeDepth_12N/07_visualization/notSorted/")
 
-setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/TreeDepth_3N/07_parsed_results/02_sorted/")
+setwd("/home/michael/research/analyses/02_analyses_Tolpis_biogeo/09_Simulations/03_P2C2M_full_analysis/TreeDepth_12N/07_parsed_results/sptree_fittingMSCM/")
 
 n_sims = 20
 n_genes_fixed = 3
@@ -35,7 +35,9 @@ for (fns in fn_prefixes) {
 ####################
 
 customStack = function(inData, simNum, nLoci, special=FALSE) {
-  handle = inData
+
+  if (special) {handle = t(as.matrix(inData))}
+  else {handle = inData}
 
   # Order of stats must be alphabetic because input data
   # also sorted alphabetically
@@ -47,8 +49,9 @@ customStack = function(inData, simNum, nLoci, special=FALSE) {
 
   colnames(handle)[1] = "value"
   colnames(handle)[2] = "stat"
+
   if (special) {
-    handle[,3] = rep(c("sum", "mean", "median", "mode", "cv"), n_sum_stats)
+    handle[,3] = rep("median", n_sum_stats)
   }
   else {handle[,3] = rep(c(1:nLoci), n_sum_stats)}
   colnames(handle)[3] = "gene"
@@ -78,7 +81,7 @@ for (num in nums) {
 #### acrGenes - regular ###
 dataHandle_a0.01_acrGene = list()
 for (num in nums) {
-  name_handle = paste(fn_prefixes[[1]], num, "$results$alpha0.01$acrGene", sep="")
+  name_handle = paste(fn_prefixes[[1]], num, "$results$alpha0.01$acrGene[3,]", sep="")
   dataHandle_a0.01_acrGene[[num]] = eval(parse(text = name_handle))
 }
 
@@ -104,16 +107,15 @@ plot_0.01 = ggplot(data=dataHandle_0.01, aes(x=sim, y=gene)) +
     scale_colour_manual(values=c(NA, 'black')) +
     facet_grid(stat ~ .) +
     ggtitle(paste("Tolpis Hybrid Simulations",
-                  "alpha = 0.01", "\n",
-                  sep="\n")) +
+                  "alpha = 0.01", sep="\n")) +
     theme_bw() +
     scale_x_discrete(breaks=c(nums), labels=c(nums)) +
-    scale_y_discrete(limits=c("cv", "mode", "median", "mean", "sum", c(n_genes_fixed:1))) +
+    scale_y_discrete(limits=c("median", c(n_genes_fixed:1)), labels=c("summary (median)", "gene 3", "gene 2", "gene 1")) +
     theme(axis.text = element_text(size=6),
           strip.background=element_rect(fill="white")) +
     xlab("\nSimulations") + 
     ylab("Genes\n")
 
-svg("/home/michael/Desktop/Tolpis.HybrSims_0.01_sorted.svg", width=5, height=5)
+svg("/home/michael/Desktop/Tolpis.HybrSims_12N_0.01.svg", width=5, height=3)
 plot_0.01
 dev.off()
