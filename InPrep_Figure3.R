@@ -3,7 +3,7 @@
 #copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
 #contributors = c("Michael Gruenstaeudl","Noah Reid")
 #email = "gruenstaeudl.1@osu.edu"
-#version = "2014.12.15.2100"
+#version = "2015.02.05.2000"
 
 library(igraph)
 library(scales)
