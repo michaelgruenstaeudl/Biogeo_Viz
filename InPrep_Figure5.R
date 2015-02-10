@@ -1,53 +1,42 @@
 #!/usr/bin/R
 #author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
-#contributors = c("Michael Gruenstaeudl","Noah Reid")
+#copyright = "Copyright (C) 2015 Michael Gruenstaeudl"
+#contributors = c("Michael Gruenstaeudl")
 #email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.05.2200"
+#version = "2015.02.09.2000"
 
-load("/home/michael/research/manuscripts/02_Tolpis_biogeo/03_Figures/NEW_Figure_5/Figure5_data.rda") 
+require(ggplot2)
 
-library(ggplot2)
-library(grid)
+inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/04_visualization/TA_C/all3Nucl/03_output/STEM-Hy_Results.hybridplot"
 
-node1_data = data[which(data[,1]=="one"),]
-node1_data = node1_data[which(node1_data[,6]=="no"),]
-node1_data = node1_data[which(node1_data[,3] %in% c("A","C","E","M")),]
-# Adjust order of levels
-node1_data[,3] = factor(node1_data[,3], levels = c("A", "C", "E", "M"))
-node1_data[,7] = rep("node1", nrow(node1_data))
-colnames(node1_data)[7] = "node_number"
+d = read.csv(inFn)
 
-# What is nowadays node 2 has previously been node 3
-node2_data = data[which(data[,1]=="three"),]
-node2_data = node2_data[which(node2_data[,6]=="no"),]
-node2_data = node2_data[which(node2_data[,3] %in% c("A","C","E","M")),]
-# Adjust order of levels
-node2_data[,3] = factor(node2_data[,3], levels = c("A", "C", "E", "M"))
-node2_data[,7] = rep("node2", nrow(node2_data))
-colnames(node2_data)[7] = "node_number"
+#Convert presence/absence data from being integers to strings,
+#because the colour designation only works on 
+d$presence = lapply(d$presence, as.character)
+d$presence = factor(d$presence, levels = c("0", "1"))
 
-node_data = rbind(node1_data, node2_data)
+#####################
+# STEP3. Make plots #
+#####################
 
-plot_data = ggplot(data=node_data, aes(x=treetype, y=pc)) +
-    geom_bar(stat='identity', aes(alpha=0.5)) +
-    coord_flip() +
-    facet_grid(node_number ~ area) +
-    scale_x_discrete(limits=c("stAll3", "stTwoLC", "gtETS", "gtB12", "gtA19"), labels=c("All3Nucl", "2LCNucl", "ETS", "B12", "A19")) +
-    scale_y_continuous(breaks=c(0.00, 0.25, 0.50, 0.75, 1.00), labels=c("","0.25","","0.75","")) +
+plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +    
+    # Variable "presence" contains information on presence/absence
+    geom_point(aes(colour=presence, shape=presence), size=0.5, alpha=1.0) +
+    scale_colour_manual(values=c(NA, 'black')) +
+    scale_shape_manual(values=c(NA, 15)) +
+    #facet_grid(alpha_value ~ .) +
+    ggtitle("STEM-Hy Presence/Absence\n") +
     theme_bw() +
-    # x- and y-axieshave been switched [coord_flip() !]
-    theme(panel.grid.major.x = element_line(size = 0.8),
-          panel.grid.major.y = element_blank(),
-          panel.grid.minor.y = element_blank(),          
+    #scale_x_discrete(breaks=c(nums), labels=c(nums)) +
+    scale_y_discrete(breaks=c(0,100,200,300,400,500,600,700,800,900,999), labels=c(0,100,200,300,400,500,600,700,800,900,"1000")) +
+    theme(axis.text = element_text(size=12),
+          axis.title=element_text(size=14),
           strip.background=element_rect(fill="white"),
-          panel.margin = unit(0.75, "lines")) +
-    ggtitle("Ancestral Area Reconstructions under BI\n") +
-    xlab("Loci (or combinations) under study\n") + 
-    ylab("\nPercent of posterior tree distribution")
-    # Remove the legend to the right
-    theme(legend.position = "none")
+          legend.position = "none") +
+    xlab("\nTaxa") + 
+    ylab("Generations of the Posterior Predictive Distribution\n")
 
-svg("/home/michael/Desktop/Figure5_bothNodes.svg", width=8, height=6)
-plot_data
+svg("/home/michael/Desktop/Figure5.svg", width=8, height=15)
+plot_stemhy
 dev.off()
