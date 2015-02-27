@@ -107,12 +107,12 @@ colnames(results) = c('generation', 'gene', 'KFdist', 'swapped')
 ######################################
 ## Save results to file as R-object ##
 ######################################
-outFn=paste("KFdist.swapped.sim.", s, ".data", sep="")
+outFn=paste("BEAST.to.starBEAST_KFdist_swapped_sim.", s, "_data", sep="")
 assign(outFn, results)
-save(outFn, file=paste("KFdist.swapped.sim.", s, ".rda", sep=""))
-#outFn=paste("KFdist.regular.sim.", s, ".data", sep="")
+save(outFn, file=paste("BEAST.to.starBEAST_KFdist_swapped_sim.", s, "_data.rda", sep=""))
+#outFn=paste("BEAST.to.starBEAST_KFdist_regular_sim.", s, "_data", sep="")
 #assign(outFn, results)
-#save(outFn, file=paste("KFdist.regular.sim.", s, ".rda", sep=""))
+#save(outFn, file=paste("BEAST.to.starBEAST_KFdist_regular_sim.", s, "_data.rda", sep=""))
 
 
 ###################
@@ -141,8 +141,8 @@ assign(paste("sim.", s, sep=""), my_plot)
 ###############################
 ## Setup layout for plotting ##
 ###############################
-svg("~/Desktop/CommT.Jan2015_KFdist_swapped.svg", width=20, height=15)
-#svg("~/Desktop/CommT.Jan2015_KFdist_regular.svg", width=20, height=15)
+svg("~/Desktop/BEAST.to.starBEAST_KFdist_swapped.svg", width=20, height=15)
+#svg("~/Desktop/BEAST.to.starBEAST_KFdist_regular.svg", width=20, height=15)
 grid.arrange(
 sim.01, sim.02, sim.03, sim.04, sim.05,
 sim.06, sim.07, sim.08, sim.09, sim.10,
