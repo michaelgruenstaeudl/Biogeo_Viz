@@ -1,6 +1,6 @@
 #!/usr/bin/R
 #author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
+#copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
 #contributors = c("Michael Gruenstaeudl")
 #email = "gruenstaeudl.1@osu.edu"
 #version = "2015.02.01.1800"
