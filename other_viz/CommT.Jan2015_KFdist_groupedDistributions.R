@@ -109,10 +109,10 @@ colnames(results) = c('generation', 'gene', 'KFdist', 'swapped')
 ######################################
 outFn=paste("KFdist.swapped.sim.", s, ".data", sep="")
 assign(outFn, results)
-save(outFn, file=paste("KFdist.swapped.sim.", s, ".data", sep=""))
+save(outFn, file=paste("KFdist.swapped.sim.", s, ".rdata", sep=""))
 #outFn=paste("KFdist.regular.sim.", s, ".data", sep="")
 #assign(outFn, results)
-#save(outFn, file=paste("KFdist.regular.sim.", s, ".data", sep=""))
+#save(outFn, file=paste("KFdist.regular.sim.", s, ".rdata", sep=""))
 
 
 ###################
