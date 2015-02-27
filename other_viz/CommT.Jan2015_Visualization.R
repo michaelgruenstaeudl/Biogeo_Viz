@@ -18,8 +18,7 @@ setwd("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/02_BEAST_Gen
 #setwd("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/01_starBEAST_GeneTrees/07_parsed_results/sorted/")
 
 
-n_sims = 10
-#n_sims = 20
+n_sims = 20
 n_genes_fixed = 10
 n_sum_stats = 3
 nums = sprintf("%02d", c(1:n_sims))

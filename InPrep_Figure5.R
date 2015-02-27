@@ -7,7 +7,8 @@
 
 require(ggplot2)
 
-inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/04_visualization/TA_C/all3Nucl/03_output/STEM-Hy_Results.hybridplot"
+#inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/04_visualization/TA_C/all3Nucl/03_output/STEM-Hy_Results.hybridplot"
+inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/02_On_best_likelihood_trees/04_visualization/STEM-Hy_Results_hybridplot.txt"
 
 d = read.csv(inFn)
 
@@ -29,7 +30,7 @@ plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +
     ggtitle("STEM-Hy Presence/Absence\n") +
     theme_bw() +
     #scale_x_discrete(breaks=c(nums), labels=c(nums)) +
-    scale_y_discrete(breaks=c(0,100,200,300,400,500,600,700,800,900,999), labels=c(0,100,200,300,400,500,600,700,800,900,"1000")) +
+    scale_y_discrete(breaks=c(0,10,20,30,40,50,60,70,80,90,99), labels=c(0,10,20,30,40,50,60,70,80,90,"100")) +
     theme(axis.text = element_text(size=12),
           axis.title=element_text(size=14),
           strip.background=element_rect(fill="white"),
@@ -37,6 +38,6 @@ plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +
     xlab("\nTaxa") + 
     ylab("Generations of the Posterior Predictive Distribution\n")
 
-svg("/home/michael/Desktop/Figure5.svg", width=8, height=15)
+svg("/home/michael/Desktop/Figure4.svg", width=8, height=15)
 plot_stemhy
 dev.off()
