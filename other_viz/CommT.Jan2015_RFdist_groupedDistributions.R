@@ -3,7 +3,7 @@
 #copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
 #contributors = c("Michael Gruenstaeudl")
 #email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.27.1300"
+#version = "2015.03.02.2000"
 
 
 ####################
@@ -31,18 +31,18 @@ for (s in n_sims) {
 cat(paste("\n", "Analyzing simulation", s, "\n"))
 
 
-####################################################
-## Loading data sets of treatment group "swapped" ##
-####################################################
-BEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/02_BEAST_GeneTrees/CommT.Jan2015.fitonly.sim.", s, ".gene", sep="")
-starBEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/01_starBEAST_geneTrees/CommT.Jan2015.g1swap.sim.", s, ".gene", sep="")
+###################################################
+## Loading data sets of treatment group "g1swap" ##
+###################################################
+#BEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/02_BEAST_GeneTrees/CommT.Jan2015.fitonly.sim.", s, ".gene", sep="")
+#starBEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/01_starBEAST_geneTrees/CommT.Jan2015.g1swap.sim.", s, ".gene", sep="")
 
 
-####################################################
-## Loading data sets of treatment group "swapped" ##
-####################################################
-#BEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/02_BEAST_GeneTrees/CommT.Jan2015.noswap.sim.", s, ".gene", sep="")
-#starBEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/01_starBEAST_geneTrees/CommT.Jan2015.noswap.sim.", s, ".gene", sep="")
+###################################################
+## Loading data sets of treatment group "noswap" ##
+###################################################
+BEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/02_BEAST_GeneTrees/CommT.Jan2015.noswap.sim.", s, ".gene", sep="")
+starBEAST_prefix = paste("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/03_KFdist_distributions/01_input/01_starBEAST_geneTrees/CommT.Jan2015.noswap.sim.", s, ".gene", sep="")
 
 
 ######################
@@ -74,7 +74,7 @@ out_df = matrix(nrow=length(BEAST_postGTdistr[[1]]), ncol=n_genes, NA)
 # Note: [2] = Kuhner-Felsenstein distance
 for (g in 1:n_genes) {
 for (i in 1:length(BEAST_postGTdistr[[g]])) {
-out_df[i,g] = treedist(BEAST_postGTdistr[[g]][[i]], starBEAST_postGTdistr[[g]][[i]], check.labels = TRUE)[2]
+out_df[i,g] = treedist(BEAST_postGTdistr[[g]][[i]], starBEAST_postGTdistr[[g]][[i]], check.labels = TRUE)[1]
 }}
 
 
@@ -101,24 +101,24 @@ results[which(results[,2]=="gene001"),4] = "gene001"
 ##################
 ## Add colnames ##
 ##################
-colnames(results) = c('generation', 'gene', 'KFdist', 'swapped')
+colnames(results) = c('generation', 'gene', 'RFdist', 'swapped')
 
 
 ######################################
 ## Save results to file as R-object ##
 ######################################
-outFn=paste("BEAST.to.starBEAST_KFdist_g1swap_sim.", s, "_data", sep="")
-assign(outFn, results)
-save(list=outFn, file=paste("BEAST.to.starBEAST_KFdist_g1swap_sim.", s, "_data.rda", sep=""))
-#outFn=paste("BEAST.to.starBEAST_KFdist_noswap_sim.", s, "_data", sep="")
+#outFn=paste("BEAST.to.starBEAST_RFdist_g1swap_sim.", s, "_data", sep="")
 #assign(outFn, results)
-#save(list=outFn, file=paste("BEAST.to.starBEAST_KFdist_noswap_sim.", s, "_data.rda", sep=""))
+#save(list=outFn, file=paste("BEAST.to.starBEAST_RFdist_g1swap_sim.", s, "_data.rda", sep=""))
+outFn=paste("BEAST.to.starBEAST_RFdist_noswap_sim.", s, "_data", sep="")
+assign(outFn, results)
+save(list=outFn, file=paste("BEAST.to.starBEAST_RFdist_noswap_sim.", s, "_data.rda", sep=""))
 
 
 ###################
 ## Visualization ##
 ###################
-my_plot = ggplot(data=results, aes(x=KFdist, group=gene, color=factor(swapped))) +
+my_plot = ggplot(data=results, aes(x=RFdist, group=gene, color=factor(swapped))) +
 geom_density(line=2) +
 ggtitle(paste("sim.", s, sep="")) +
 theme_bw() +
@@ -141,8 +141,8 @@ assign(paste("sim.", s, sep=""), my_plot)
 ###############################
 ## Setup layout for plotting ##
 ###############################
-svg("~/Desktop/BEAST.to.starBEAST_KFdist_g1swap.svg", width=20, height=15)
-#svg("~/Desktop/BEAST.to.starBEAST_KFdist_noswap.svg", width=20, height=15)
+#svg("~/Desktop/BEAST.to.starBEAST_RFdist_g1swap.svg", width=20, height=15)
+svg("~/Desktop/BEAST.to.starBEAST_RFdist_noswap.svg", width=20, height=15)
 grid.arrange(
 sim.01, sim.02, sim.03, sim.04, sim.05,
 sim.06, sim.07, sim.08, sim.09, sim.10,

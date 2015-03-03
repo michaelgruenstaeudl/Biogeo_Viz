@@ -16,7 +16,7 @@ setwd("/run/media/michael/6974AEDF6DB4DD0C/05_Project_CommT_Jan2015/02_BEAST_Gen
 n_sims = 20
 nums = sprintf("%02d", c(1:n_sims))
 #fn_prefixes = c("CommT.Jan2015.fitonly.sim.")
-fn_prefixes = c("CommT.Jan2015.regular.sim.")
+fn_prefixes = c("CommT.Jan2015.noswap.sim.")
 
 # Generate infile names
 inFns = c()

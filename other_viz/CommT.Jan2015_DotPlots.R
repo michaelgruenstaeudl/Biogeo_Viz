@@ -22,7 +22,7 @@ n_sims = 20
 n_genes_fixed = 10
 n_sum_stats = 3
 nums = sprintf("%02d", c(1:n_sims))
-#fn_prefixes = c("CommT.Jan2015.regular.sim.", "CommT.Jan2015.swapped.sim.")
+#fn_prefixes = c("CommT.Jan2015.noswap.sim.", "CommT.Jan2015.g1swap.sim.")
 fn_prefixes = c("CommT.Jan2015.fitonly.sim.")
 
 ## Load .rda-files
