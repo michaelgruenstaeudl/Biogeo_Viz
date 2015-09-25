@@ -24,9 +24,10 @@ rmext = function (instring, delimiter="\\.")
 JML_Viz = function(inFn, alpha) {
     # Parse output of JML as input data
     handle = read.table(inFn, sep="\t", header = TRUE)
+    handle = handle[which(handle[,"Probability"] <= alpha),]
+    
     if (nrow(handle) >= 1) {
         inData = TRUE
-        handle = handle[which(handle[,"Probability"] <= alpha),]
         handle = handle[,grep("Sp.Comparison", colnames(handle))]
         # Filter out only unique hybridisation (i.e., quantitative info is lost)
         handle = unique(handle)
@@ -38,12 +39,14 @@ JML_Viz = function(inFn, alpha) {
     # Set up empty graph
     g = graph.empty(directed=FALSE)
 
+    
     # Add vertices (i.e. labels) to graph with a specific color
-    g = g + vertices(c("min"), color="grey") 
-    g = g + vertices(c("azo", "sua"), color="blue")
-    g = g + vertices(c("cor", "cra", "far", "gla", "lac", "lag", "san", "spn", "web"), color="yellow")
-    g = g + vertices(c("bar", "vir"), color="green")
-    g = g + vertices(c("sum", "mac"), color="red")
+    # FOR GENES 01 and 02
+    g = g + vertices(c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "z"), color=NA)
+    # FOR GENES 03
+    #g = g + vertices(c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"), color=NA)
+    #g = g + vertices(c("z"), color="red")
+
 
     # Add edge information (as saved in data)
     if (inData) {
@@ -62,22 +65,28 @@ JML_Viz = function(inFn, alpha) {
     lab.locs = radian.rescale(x=1:ntaxa, direction=-1, start=0)
 
     # Only necessary, when plotting columnwise
-    par(mar = rep(1, 4))
+    par(mar = rep(0.5, 4))
 
     # Plot the as a Watts-Strogatz graph
-    plot(g, layout=layout.circle, vertex.size=25, vertex.frame.color=NA, 
-         vertex.label.dist=1.5, vertex.label.color="black",
-         vertex.label.cex=0.8, vertex.label.degree=lab.locs, edge.color="black", edge.width=2)
+    plot(g, layout=layout.circle, vertex.size=25, vertex.frame.color="black", 
+         vertex.label.dist=3.0, vertex.label.color="white",
+         vertex.label.cex=0.1, vertex.label.degree=lab.locs, edge.color="black", edge.width=2)
 }
 
 inDir = rchoose.dir()
 setwd(inDir)
 nFiles = length(list.files(inDir))
 
-svg("gene01_01to10.alpha0.05.svg")
-# Plotting row-wise
-#layout(matrix(1:nFiles,1,nFiles,byrow=T)
+# USER MODIFICATION
+svg("gene01_11to20.alpha0.01.svg")
+count=11
+
 # Plotting column-wise
-layout(matrix(1:nFiles,nrow=nFiles,ncol=1,byrow=F))
-for (f in list.files(inDir, pattern = '*.RESULTS.txt')) {g = JML_Viz(as.character(f), 0.05)}
-dev.off() 
+layout(matrix(1:nFiles, nrow=nFiles, ncol=1, byrow=F))
+for (f in list.files(inDir, pattern = '*.RESULTS.txt')) {
+    # USER MODIFICATION
+    g = JML_Viz(as.character(f), 0.01)
+    text(0, 0, paste("sim.", count), cex=0.5)
+    count=count+1
+    }
+dev.off()

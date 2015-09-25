@@ -2,13 +2,13 @@
 #author = "Michael Gruenstaeudl, PhD"
 #copyright = "Copyright (C) 2015 Michael Gruenstaeudl"
 #contributors = c("Michael Gruenstaeudl")
-#email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.09.2000"
+#email = "mi.gruenstaeudl@gmail.com"
+#version = "2015.09.07.1500"
 
 require(ggplot2)
 
-#inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/04_visualization/TA_C/all3Nucl/03_output/STEM-Hy_Results.hybridplot"
-inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/02_On_best_likelihood_trees/04_visualization/STEM-Hy_Results_hybridplot.txt"
+inFn = "/home/michael_science/Desktop/Tolpis_AAR/Evaluating_STEM-Hy/04_visualization/02_process/SimulatedData_STEMHy_Results_hybridplot.txt"
+#inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/02_On_best_likelihood_trees/04_visualization/STEM-Hy_Results_hybridplot.txt"
 
 d = read.csv(inFn)
 
@@ -20,6 +20,9 @@ d$presence = factor(d$presence, levels = c("0", "1"))
 #####################
 # STEP3. Make plots #
 #####################
+
+'''
+# 2014_OSU
 
 plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +    
     # Variable "presence" contains information on presence/absence
@@ -39,5 +42,30 @@ plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +
     ylab("Generations of the Posterior Predictive Distribution\n")
 
 svg("/home/michael/Desktop/Figure4.svg", width=8, height=15)
+plot_stemhy
+dev.off()
+'''
+
+
+# 2015_FUBerlin
+
+gnums = c(1:20)
+
+plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +    
+    geom_point(aes(colour=presence, shape=presence), size=0.5, alpha=1.0) +
+    scale_colour_manual(values=c(NA, 'black')) +
+    scale_shape_manual(values=c(NA, 15)) +
+    #ggtitle("STEM-Hy Presence/Absence\n") +
+    theme_bw() +
+    #scale_x_discrete(breaks=c(nums), labels=c(nums)) +
+    scale_y_discrete(breaks=gnums, labels=sprintf("%02d", gnums)) +
+    theme(axis.text = element_text(size=12),
+          axis.title=element_text(size=14),
+          strip.background=element_rect(fill="white"),
+          legend.position = "none") +
+    xlab("\nTaxa") + 
+    ylab("Simulations\n")
+
+svg("/home/michael_science/Desktop/FigureS5.svg", width=6, height=8)
 plot_stemhy
 dev.off()
