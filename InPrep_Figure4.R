@@ -23,7 +23,7 @@ plot_data = ggplot(data=clade_data, aes(x=treetype, y=pc, fill=area)) +
     scale_fill_manual(values = printerfriendly_bw_palette,
                       name="Ancestral area",
                       breaks=c("AZ", "CI", "CM", "MA"),
-                      labels=c("Azores", "Canary Islands", "Continental Mediterranean", "Madeira")) +
+                      labels=c("Azores", "Canary Islands", "Cont. Med.", "Madeira")) +
     theme(text = element_text(size=28),
           panel.grid.major.x = element_line(size = 0.8),
           panel.grid.major.y = element_blank(),
@@ -35,6 +35,6 @@ plot_data = ggplot(data=clade_data, aes(x=treetype, y=pc, fill=area)) +
     xlab("Locus or locus sets\n") + 
     ylab("\nPercent of posterior tree distribution")
 
-svg("/home/michael/Desktop/TolpisBiogeo_Figure4_bothNodes.svg", width=8, height=4)
+svg("/home/michael/Desktop/TolpisBiogeo_Figure4_bothNodes.svg", width=16, height=9)
 plot_data
 dev.off()
