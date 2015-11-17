@@ -1,9 +1,7 @@
 #!/usr/bin/R
-#author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
-#contributors = c("Michael Gruenstaeudl")
-#email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.05.1700"
+#author = "Michael Gruenstaeudl, PhD <mi.gruenstaeudl@gmail.com>"
+#copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
+#version = "2015.11.17.1600"
 
 #############
 # Libraries #

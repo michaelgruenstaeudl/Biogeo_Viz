@@ -1,8 +1,7 @@
 #!/usr/bin/R
-#author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2015 Michael Gruenstaeudl"
-#email = "mi.gruenstaeudl@gmail.com"
-#version = "2015.08.28.1700"
+#author = "Michael Gruenstaeudl, PhD <mi.gruenstaeudl@gmail.com>"
+#copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
+#version = "2015.11.17.1600"
 
 library(igraph)
 library(scales)

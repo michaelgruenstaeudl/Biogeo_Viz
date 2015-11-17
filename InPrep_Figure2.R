@@ -1,9 +1,7 @@
 #!/usr/bin/R
-#author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
-#contributors = c("Michael Gruenstaeudl")
-#email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.05.1700"
+#author = "Michael Gruenstaeudl, PhD <mi.gruenstaeudl@gmail.com>"
+#copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
+#version = "2015.11.17.1600"
 
 #############
 # Libraries #
@@ -116,6 +114,6 @@ plot_0.01 = ggplot(data=dataHandle_0.01, aes(x=sim, y=gene)) +
     xlab("\nSimulations") + 
     ylab("Genes\n")
 
-svg("/home/michael/Desktop/Tolpis.HybrSims_12N_0.01.svg", width=5, height=3)
+svg("/home/michael/Desktop/TolpisBioGeo_Figure2.HybrSims_12N_0.01.svg", width=5, height=3)
 plot_0.01
 dev.off()

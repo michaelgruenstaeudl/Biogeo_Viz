@@ -1,83 +1,69 @@
 #!/usr/bin/R
-#author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2015 Michael Gruenstaeudl"
-#email = "mi.gruenstaeudl@gmail.com"
-#version = "2015.08.28.1700"
+#author = "Michael Gruenstaeudl, PhD <mi.gruenstaeudl@gmail.com>"
+#copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
+#version = "2015.11.17.1600"
 
-library(igraph)
-library(scales)
-library(rChoiceDialogs)
+require(ggplot2)
 
-# Variable specific to data set
-ntaxa = 16
+inFn = "/home/michael_science/Desktop/Tolpis_AAR/Evaluating_STEM-Hy/04_visualization/02_process/SimulatedData_STEMHy_Results_hybridplot.txt"
+#inFn = "/home/michael/research/analyses/02_analyses_Tolpis_biogeo/08_STEM-Hy/02_On_best_likelihood_trees/04_visualization/STEM-Hy_Results_hybridplot.txt"
 
-rmext = function (instring, delimiter="\\.")
-{
-    library('stringr')
-    # get all instances of "."
-    alist = str_locate_all(instring, delimiter)
-    # get position of last element
-    pos2 = tail(alist[[1]],1)[1]-1
-    return(substr(instring, 1, pos2))
-}
+d = read.csv(inFn)
 
-JML_Viz = function(inFn, alpha) {
-    # Parse output of JML as input data
-    handle = read.table(inFn, sep="\t", header = TRUE)
-    if (nrow(handle) >= 1) {
-        inData = TRUE
-        handle = handle[which(handle[,"Probability"] <= alpha),]
-        handle = handle[,grep("Sp.Comparison", colnames(handle))]
-        # Filter out only unique hybridisation (i.e., quantitative info is lost)
-        handle = unique(handle)
-        handle = strsplit(as.character(handle), "-")
-        data = as.matrix(t(simplify2array(handle)))
-    }
-    else {inData = FALSE}
+#Convert presence/absence data from being integers to strings,
+#because the colour designation only works on 
+d$presence = lapply(d$presence, as.character)
+d$presence = factor(d$presence, levels = c("0", "1"))
 
-    # Set up empty graph
-    g = graph.empty(directed=FALSE)
+#####################
+# STEP3. Make plots #
+#####################
 
-    # Add vertices (i.e. labels) to graph with a specific color
-    g = g + vertices(c("min"), color="grey") 
-    g = g + vertices(c("azo", "sua"), color="blue")
-    g = g + vertices(c("cor", "cra", "far", "gla", "lac", "lag", "san", "spn", "web"), color="yellow")
-    g = g + vertices(c("bar", "vir"), color="green")
-    g = g + vertices(c("sum", "mac"), color="red")
+'''
+# 2014_OSU
 
-    # Add edge information (as saved in data)
-    if (inData) {
-        g = g + graph.edgelist(data, directed=FALSE)
-    }
+plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +    
+    # Variable "presence" contains information on presence/absence
+    geom_point(aes(colour=presence, shape=presence), size=0.5, alpha=1.0) +
+    scale_colour_manual(values=c(NA, 'black')) +
+    scale_shape_manual(values=c(NA, 15)) +
+    #facet_grid(alpha_value ~ .) +
+    ggtitle("STEM-Hy Presence/Absence\n") +
+    theme_bw() +
+    #scale_x_discrete(breaks=c(nums), labels=c(nums)) +
+    scale_y_discrete(breaks=c(0,10,20,30,40,50,60,70,80,90,99), labels=c(0,10,20,30,40,50,60,70,80,90,"100")) +
+    theme(axis.text = element_text(size=12),
+          axis.title=element_text(size=14),
+          strip.background=element_rect(fill="white"),
+          legend.position = "none") +
+    xlab("\nTaxa") + 
+    ylab("Generations of the Posterior Predictive Distribution\n")
 
-    # Check everything before plotting
-    #str(g)
-    
-    # Rescale verteces
-    # http://stackoverflow.com/questions/23209802/placing-vertex-label-outside-a-circular-layout-in-igraph
-    radian.rescale = function(x, start=0, direction=1) {
-        c.rotate = function(x) (x + start) %% (2 * pi) * direction
-        c.rotate(scales::rescale(x, c(0, 2 * pi), range(x)))
-    }
-    lab.locs = radian.rescale(x=1:ntaxa, direction=-1, start=0)
+svg("/home/michael/Desktop/Figure4.svg", width=8, height=15)
+plot_stemhy
+dev.off()
+'''
 
-    # Only necessary, when plotting columnwise
-    par(mar = rep(1, 4))
 
-    # Plot the as a Watts-Strogatz graph
-    plot(g, layout=layout.circle, vertex.size=25, vertex.frame.color=NA, 
-         vertex.label.dist=1.5, vertex.label.color="black",
-         vertex.label.cex=0.8, vertex.label.degree=lab.locs, edge.color="black", edge.width=2)
-}
+# 2015_FUBerlin
 
-inDir = rchoose.dir()
-setwd(inDir)
-nFiles = length(list.files(inDir))
+gnums = c(1:20)
 
-svg("gene01_01to10.alpha0.05.svg")
-# Plotting row-wise
-#layout(matrix(1:nFiles,1,nFiles,byrow=T)
-# Plotting column-wise
-layout(matrix(1:nFiles,nrow=nFiles,ncol=1,byrow=F))
-for (f in list.files(inDir, pattern = '*.RESULTS.txt')) {g = JML_Viz(as.character(f), 0.05)}
-dev.off() 
+plot_stemhy = ggplot(data=d, aes(x=taxa, y=gen)) +    
+    geom_point(aes(colour=presence, shape=presence), size=0.5, alpha=1.0) +
+    scale_colour_manual(values=c(NA, 'black')) +
+    scale_shape_manual(values=c(NA, 15)) +
+    #ggtitle("STEM-Hy Presence/Absence\n") +
+    theme_bw() +
+    #scale_x_discrete(breaks=c(nums), labels=c(nums)) +
+    scale_y_discrete(breaks=gnums, labels=sprintf("%02d", gnums)) +
+    theme(axis.text = element_text(size=12),
+          axis.title=element_text(size=14),
+          strip.background=element_rect(fill="white"),
+          legend.position = "none") +
+    xlab("\nTaxa") + 
+    ylab("Simulations\n")
+
+svg("/home/michael_science/Desktop/TolpisBiogeo_Figure3.svg", width=6, height=8)
+plot_stemhy
+dev.off()

@@ -1,9 +1,7 @@
 #!/usr/bin/R
-#author = "Michael Gruenstaeudl, PhD"
-#copyright = "Copyright (C) 2014 Michael Gruenstaeudl"
-#contributors = c("Michael Gruenstaeudl","Noah Reid")
-#email = "gruenstaeudl.1@osu.edu"
-#version = "2015.02.05.2200"
+#author = "Michael Gruenstaeudl, PhD <mi.gruenstaeudl@gmail.com>"
+#copyright = "Copyright (C) 2014-2015 Michael Gruenstaeudl"
+#version = "2015.11.17.1600"
 
 load("/home/michael/research/manuscripts/02_Tolpis_biogeo/03_Figures/NEW_Figure_6/Figure6_data.rda") 
 
@@ -48,6 +46,6 @@ plot_data = ggplot(data=node_data, aes(x=treetype, y=pc)) +
     # Remove the legend to the right
     theme(legend.position = "none")
 
-svg("/home/michael/Desktop/Figure6_bothNodes.svg", width=8, height=6)
+svg("/home/michael/Desktop/TolpisBiogeo_Figure4_bothNodes.svg", width=8, height=6)
 plot_data
 dev.off()
